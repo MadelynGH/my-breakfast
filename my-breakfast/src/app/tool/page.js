@@ -1,4 +1,4 @@
-import Tool from "../../components/tool.js";
+import Tool from "../../_components/Tool.js";
 
 export default function Page() {
     return (

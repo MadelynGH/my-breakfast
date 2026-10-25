@@ -26,3 +26,38 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 400;
     cursor: pointer;
 }
+
+input:hover, label:hover {
+    cursor: pointer;
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    width: 1.2em;
+    height: 1.2em;
+    border: 1px solid #74C758;
+    border-radius: 20%;
+    transition-duration: 0.2s;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #74C758;
+}
+
+input[type="checkbox"]::after {
+    content: "✓";
+    color: white;
+    margin-left: 2.5px;
+}
+
+.negativeCheckbox {
+    border-color: #C75874!important;
+}
+
+.negativeCheckbox:checked {
+    background-color: #C75874!important;
+}
+
+.negativeCheckbox::after {
+    content: "X"!important;
+}

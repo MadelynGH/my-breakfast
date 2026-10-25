@@ -1,29 +1,37 @@
 "use client";
 import Form from "next/form";
 import { useState, useEffect } from "react";
-import { montserrat } from "../app/layout.js";
 import "../app/globals.css";
+import { Montserrat } from "next/font/google";
+
+export const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"]
+});
 
 const stages = [<h2 style={{
                 marginTop: "0"
             }}>Select all the ingredients you <span className="red">hate</span>.</h2>, <h2>Select all the ingredients that you <span className="greenText">DO</span> have.</h2>];
-const foods = ["Eggs", "Milk", "Cheddar Cheese", "Pepper Jack Cheese", "American Cheese", "Almonds", "Peanuts", "Cashews", "Walnuts", "Strawberries", "Flour", "Sugar", "Yogurt"];
+const foods = ["Flour", "Sugar", "Yogurt", "Baking Powder", "Eggs", "Butter", "Milk", "Cheddar Cheese", "Pepper Jack Cheese", "American Cheese", "Almonds", "Peanuts", "Cashews", "Walnuts", "Strawberries", "Raspberries", "Blueberries", "Bananas"];
 const meals = {
-    "Scrambled Eggs": ["Eggs"],
-    "Pancakes": ["Eggs", "Milk", "Flour", "Sugar"],
-    "Cheddar Omelete": ["Eggs", "Cheddar Cheese"]
+    "Scrambled Eggs": ["Eggs", "Butter"],
+    "Pancakes": ["Eggs", "Milk", "Flour", "Baking Powder", "Butter"],
+    "Cheddar Omelette": ["Eggs", "Cheddar Cheese"],
+    "Yogurt": ["Yogurt"],
 };
 let inputList = [];
 let tempFormState;
 
-function InputList({ formState, updateFormState }) {
+function InputList({ formState, updateFormState, currentStage, noUseFoods }) {
     inputList = [];
     tempFormState = formState.slice();
-
+    
     for (let i = 0; i < foods.length; i++) {
-        inputList.push(<div key={i} style={{
-            margin: "10px"
-        }}><input type="checkbox" checked={formState[i]} onChange={(e) => {tempFormState[i]=e.target.checked; updateFormState(tempFormState);}} name={foods[i]} id={foods[i]} />
+        inputList.push(<div key={i} id={`input-div-${foods[i]}`} style={{
+            margin: "10px",
+            display: currentStage == 1 && noUseFoods[i] ? "none" : "flex",
+            alignItems: "center"
+        }}><input type="checkbox" className={currentStage == 0 ? "negativeCheckbox" : ""} checked={formState[i]} onChange={(e) => {tempFormState[i]=e.target.checked; updateFormState(tempFormState);}} name={foods[i]} id={foods[i]} />
         <label htmlFor={foods[i]} style={{
             fontSize: "1.2em",
             margin: "5px"
@@ -39,14 +47,13 @@ export default function Tool() {
     const [acceptableMeals, updateAcceptableMeals] = useState([]);
     const [noUseFoods, updateNoUseFoods] = useState(null);
     const [ownedFoods, updateOwnedFoods] = useState(null);
-    const [test, updateTest] = useState("hi");
 
     useEffect(() => {
         if (ownedFoods && noUseFoods) {
             updateAcceptableMeals(Object.keys(meals).map((meal) => {
                 for (let i of meals[meal]) {
                     if (noUseFoods.includes(i)) {
-                        console.log("exited via noUse");
+                        console.log("exited via noUse", i);
                         return;
                     }
                     if (! (ownedFoods.includes(i))) {
@@ -56,7 +63,6 @@ export default function Tool() {
                 }
                 return meal;
             }));
-            console.log(acceptableMeals);
         }
     }, [ownedFoods, noUseFoods]);
 
@@ -84,12 +90,17 @@ export default function Tool() {
             paddingTop: "5vh"
         }}>
             {stages[currentStage]}
-            <h2>{acceptableMeals}</h2>
+            <div style={{
+                display: currentStage > 1 ? "block" : "none"
+            }}>
+                <h2>Recommended Meals:</h2>
+                <ul>{acceptableMeals.map(meal => meal ? <li key={meal} style={{fontSize: "1.2em"}}><b>{meal}</b> ({meals[meal].map((i,n) => n < (meals[meal].length - 1) ? `${i}, ` : i)})</li> : null)}</ul>
+            </div>
             <Form action={mySubmitForm} style={{
                 marginLeft: "10%",
                 display: currentStage < 2 ? "block" : "none"
             }}>
-                <InputList formState={formState} updateFormState={updateFormState} />
+                <InputList formState={formState} updateFormState={updateFormState} currentStage={currentStage} noUseFoods={noUseFoods} />
                 <button className={`${montserrat.className} buttonAppearance`}>Next</button>
             </Form>
         </section>
