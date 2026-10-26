@@ -10,6 +10,6 @@ export default function BackButton() {
             fontSize: "1.8em",
             textDecoration: "none",
             color: "#070C33"
-        }}>←</Link>
+        }} id="backButton">←</Link>
     );
 }

@@ -18,10 +18,10 @@ export default function RootLayout({ children }) {
         <div>
           <h1 style={{
           fontSize: "3em"
-        }}>🍳 My Breakfast <span style={{
+        }}><span className="eggSpan"></span> <span id="my-breakfast">My Breakfast</span> <span style={{
           display: "inline-block",
           transform: "scaleX(-1)"
-        }}>🍳</span></h1>
+        }} className="eggSpan"></span></h1>
         </div>
         {children}
       </body>

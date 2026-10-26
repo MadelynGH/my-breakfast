@@ -79,3 +79,33 @@ input[type="checkbox"]::after {
 .negativeCheckbox::after {
     content: "X"!important;
 }
+
+.eggSpan::after {
+    content: "🍳";
+}
+
+.eggSpan:hover {
+    cursor: default;
+}
+
+.eggSpan:hover::after {
+    content: "🥚";
+}
+
+#my-breakfast {
+    display: inline-block;
+    transition-duration: 0.8s;
+}
+
+#my-breakfast:hover {
+    transform: scale(-1, 1);
+    cursor: default;
+}
+
+#backButton {
+    transition-duration: 0.3s;
+}
+
+#backButton:hover {
+    transform: scale(110%);
+}

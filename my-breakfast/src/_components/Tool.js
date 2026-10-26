@@ -23,6 +23,7 @@ const stages = [<h2 style={{
             }}>Recommended Meals:</h1>];
 let inputList = [];
 let tempFormState;
+let noOptionsNotes = ["Tough crowd! I've got nothing for you.", "I couldn't find anything that fits the constraints.", "... Bruh. OK, I really don't know at this point.", "Figure it out yourself, if you're going to be so picky!", "My meal ideas must not be comprehensive enough for you, huh?", "You hate so many foods. Or do you not have them? Or is this because of time?", "What should you eat?! The answer: I don't know.", " ... Sigh. The constraints are just too much for me.", "I hate to break it to you, but ... I don't know.", "Be a little less picky and try again."];
 
 function InputList({ formState, updateFormState, currentStage, noUseFoods }) {
     inputList = [];
@@ -50,6 +51,7 @@ export default function Tool() {
     const [noUseFoods, updateNoUseFoods] = useState(null);
     const [ownedFoods, updateOwnedFoods] = useState(null);
     const [availableTime, updateAvailableTime] = useState(null);
+    const [chosenNote, updateChosenNote] = useState("");
 
     useEffect(() => {
         if (ownedFoods && noUseFoods && availableTime) {
@@ -83,6 +85,7 @@ export default function Tool() {
         } else if (currentStage === 2) {
             let formData = new FormData(e.target);
             updateAvailableTime(formData.get("time"));
+            updateChosenNote(noOptionsNotes[Date.now() % noOptionsNotes.length]);
         }
 
         updateFormState(foods.map(() => false));
@@ -106,8 +109,11 @@ export default function Tool() {
                 display: currentStage > 2 ? "block" : "none"
             }}>
                 {acceptableMeals.length == 0 ? <p style={{
-                    textAlign: "center"
-                }}>Tough crowd! I've got nothing for you.</p> : <MealDisplay displayMeals={acceptableMeals} />}
+                    textAlign: "center",
+                    width: "70%",
+                    marginLeft: "auto",
+                    marginRight: "auto"
+                }}>{chosenNote}</p> : <MealDisplay displayMeals={acceptableMeals} />}
             </div>
             <Form onSubmit={mySubmitForm} style={{
                 marginLeft: "10%",
