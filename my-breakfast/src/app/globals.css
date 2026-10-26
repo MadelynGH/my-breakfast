@@ -13,7 +13,7 @@ li {
 }
 
 .red {
-    color: #C75874;
+    color: #863b4e;
 }
 
 .greenText {
@@ -29,10 +29,10 @@ a:hover {
 }
 
 .buttonAppearance {
-    background-color: #74C758;
+    background-color: #41822B;
+    color: white;
     margin-top: 20px;
     font-size: 1.5em;
-    color: black;
     border: none;
     border-radius: 10px;
     padding: 12px;
@@ -53,13 +53,13 @@ input[type="checkbox"] {
     appearance: none;
     width: 1.2em;
     height: 1.2em;
-    border: 1px solid #74C758;
+    border: 1px solid #41822B;
     border-radius: 20%;
     transition-duration: 0.2s;
 }
 
 input[type="checkbox"]:checked {
-    background-color: #74C758;
+    background-color: #41822B;
 }
 
 input[type="checkbox"]::after {
@@ -69,11 +69,11 @@ input[type="checkbox"]::after {
 }
 
 .negativeCheckbox {
-    border-color: #C75874!important;
+    border-color: #863b4e!important;
 }
 
 .negativeCheckbox:checked {
-    background-color: #C75874!important;
+    background-color: #863b4e!important;
 }
 
 .negativeCheckbox::after {

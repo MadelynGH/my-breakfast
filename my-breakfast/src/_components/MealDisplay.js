@@ -1,6 +1,6 @@
 import { meals } from "../data.js";
 
-function OneMeal({ name, ingredients }) {
+function OneMeal({ name, ingredients, time }) {
     console.log(name, ingredients)
     return (
         <div style={{
@@ -17,8 +17,10 @@ function OneMeal({ name, ingredients }) {
         }}>
             <h2>{name}</h2>
             <h3 style={{
-                textAlign: "center"
+                textAlign: "center",
+                margin: "0"
             }}>{ingredients.map((i,n) => n < (ingredients.length - 1) ? `${i}, ` : i)}</h3>
+            <h3><i>{time} minutes</i></h3>
         </div>
     );
 }
@@ -34,7 +36,7 @@ export default function MealDisplay({ displayMeals }) {
             justifyContent: "space-evenly",
             marginTop: "5.5%"
         }}>
-            {displayMeals.map(mealName => <OneMeal name={mealName} ingredients={meals[mealName]} key={mealName} />)}
+            {displayMeals.map(mealName => <OneMeal name={mealName} ingredients={meals[mealName][0]} time={meals[mealName][1]} key={mealName} />)}
         </div>
     );
 }

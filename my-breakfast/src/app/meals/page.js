@@ -14,7 +14,7 @@ export default function Page() {
                 paddingTop: "5vh"
             }}>
                 <h2>Meal Ideas</h2>
-                <ul>{Object.keys(meals).map(meal => <li key={meal} style={{fontSize: "1.2em"}}><b>{meal}</b> ({meals[meal].map((i,n) => n < (meals[meal].length - 1) ? `${i}, ` : i)})</li>)}</ul>
+                <ul>{Object.keys(meals).map(meal => <li key={meal} style={{fontSize: "1.2em"}}><b>{meal}</b> ({meals[meal][0].map((i,n) => n < (meals[meal][0].length - 1) ? `${i}, ` : i)}) - {meals[meal][1]} minutes</li>)}</ul>
             </section>
         </>
     );

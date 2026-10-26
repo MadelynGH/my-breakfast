@@ -15,7 +15,9 @@ const stages = [<h2 style={{
                 marginTop: "0"
             }}>Select all the ingredients you <span className="red">hate</span>.</h2>, <h2 style={{
                 marginTop: "0"
-            }}>Select all the ingredients that you <span className="greenText">DO</span> have.</h2>, <h1 style={{
+            }}>Select all the ingredients that you <span className="greenText">DO</span> have.</h2>, <h2 style={{
+                marginTop: "0"
+            }}>How much time do you have for prep?</h2>, <h1 style={{
                 marginTop: "0",
                 fontSize: "1.8em"
             }}>Recommended Meals:</h1>];
@@ -29,7 +31,7 @@ function InputList({ formState, updateFormState, currentStage, noUseFoods }) {
     for (let i = 0; i < foods.length; i++) {
         inputList.push(<div key={i} id={`input-div-${foods[i]}`} style={{
             margin: "10px",
-            display: currentStage == 1 && noUseFoods[i] ? "none" : "flex",
+            display: (currentStage == 1 && noUseFoods[i]) || (currentStage > 1) ? "none" : "flex",
             alignItems: "center"
         }}><input type="checkbox" className={currentStage == 0 ? "negativeCheckbox" : ""} checked={formState[i]} onChange={(e) => {tempFormState[i]=e.target.checked; updateFormState(tempFormState);}} name={foods[i]} id={foods[i]} />
         <label htmlFor={foods[i]} style={{
@@ -47,34 +49,40 @@ export default function Tool() {
     const [acceptableMeals, updateAcceptableMeals] = useState([]);
     const [noUseFoods, updateNoUseFoods] = useState(null);
     const [ownedFoods, updateOwnedFoods] = useState(null);
+    const [availableTime, updateAvailableTime] = useState(null);
 
     useEffect(() => {
-        if (ownedFoods && noUseFoods) {
+        if (ownedFoods && noUseFoods && availableTime) {
             let tempAcceptableMeals = [];
             Object.keys(meals).forEach((meal) => {
-                for (let i of meals[meal]) {
+                for (let i of meals[meal][0]) {
                     if (noUseFoods.includes(i)) {
-                        console.log("exited via noUse", i);
                         return;
                     }
                     if (! (ownedFoods.includes(i))) {
-                        console.log("exited via ownedFoods", i);
                         return;
                     }
+                }
+                if (meals[meal][1] > availableTime) {
+                    return;
                 }
                 tempAcceptableMeals.push(meal);
             });
             updateAcceptableMeals(tempAcceptableMeals);
         }
-    }, [ownedFoods, noUseFoods]);
+    }, [ownedFoods, noUseFoods, availableTime]);
 
-    function mySubmitForm() {
+    function mySubmitForm(e) {
+        e.preventDefault();
         window.scrollTo(0, 0);
 
         if (currentStage === 0) {
             updateNoUseFoods(formState.map((i, n) => {if (i) { return foods[n]; } }));
         } else if (currentStage === 1) {
             updateOwnedFoods(formState.map((i, n) => {if (i) { return foods[n]; } }));
+        } else if (currentStage === 2) {
+            let formData = new FormData(e.target);
+            updateAvailableTime(formData.get("time"));
         }
 
         updateFormState(foods.map(() => false));
@@ -95,18 +103,20 @@ export default function Tool() {
         }}>
             {stages[currentStage]}
             <div style={{
-                display: currentStage > 1 ? "block" : "none"
+                display: currentStage > 2 ? "block" : "none"
             }}>
-                {/* <ul>{acceptableMeals.length == 0 ? "Tough crowd! I've got nothing for you." : acceptableMeals.map(meal => <li key={meal} style={{fontSize: "1.2em"}}><b>{meal}</b> ({meals[meal].map((i,n) => n < (meals[meal].length - 1) ? `${i}, ` : i)})</li>)}</ul> */}
                 {acceptableMeals.length == 0 ? <p style={{
                     textAlign: "center"
                 }}>Tough crowd! I've got nothing for you.</p> : <MealDisplay displayMeals={acceptableMeals} />}
             </div>
-            <Form action={mySubmitForm} style={{
+            <Form onSubmit={mySubmitForm} style={{
                 marginLeft: "10%",
-                display: currentStage < 2 ? "block" : "none"
+                display: currentStage < 3 ? "block" : "none"
             }}>
                 <InputList formState={formState} updateFormState={updateFormState} currentStage={currentStage} noUseFoods={noUseFoods} />
+                <input type="number" style={{
+                    display: currentStage == 2 ? "block" : "none"
+                }} name="time" />
                 <button className={`${montserrat.className} buttonAppearance`}>Next</button>
             </Form>
         </section>
