@@ -15,9 +15,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={montserrat.className}>
-        <h1 style={{
-        fontSize: "3em"
-      }}>My Breakfast</h1>
+        <div>
+          <h1 style={{
+          fontSize: "3em"
+        }}>🍳 My Breakfast <span style={{
+          display: "inline-block",
+          transform: "scaleX(-1)"
+        }}>🍳</span></h1>
+        </div>
         {children}
       </body>
     </html>

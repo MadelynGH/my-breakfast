@@ -3,6 +3,8 @@ import Form from "next/form";
 import { useState, useEffect } from "react";
 import "../app/globals.css";
 import { Montserrat } from "next/font/google";
+import {meals, foods} from "../data.js";
+import MealDisplay from "./MealDisplay.js";
 
 export const montserrat = Montserrat({
   subsets: ["latin"],
@@ -11,14 +13,12 @@ export const montserrat = Montserrat({
 
 const stages = [<h2 style={{
                 marginTop: "0"
-            }}>Select all the ingredients you <span className="red">hate</span>.</h2>, <h2>Select all the ingredients that you <span className="greenText">DO</span> have.</h2>];
-const foods = ["Flour", "Sugar", "Yogurt", "Baking Powder", "Eggs", "Butter", "Milk", "Cheddar Cheese", "Pepper Jack Cheese", "American Cheese", "Almonds", "Peanuts", "Cashews", "Walnuts", "Strawberries", "Raspberries", "Blueberries", "Bananas"];
-const meals = {
-    "Scrambled Eggs": ["Eggs", "Butter"],
-    "Pancakes": ["Eggs", "Milk", "Flour", "Baking Powder", "Butter"],
-    "Cheddar Omelette": ["Eggs", "Cheddar Cheese"],
-    "Yogurt": ["Yogurt"],
-};
+            }}>Select all the ingredients you <span className="red">hate</span>.</h2>, <h2 style={{
+                marginTop: "0"
+            }}>Select all the ingredients that you <span className="greenText">DO</span> have.</h2>, <h1 style={{
+                marginTop: "0",
+                fontSize: "1.8em"
+            }}>Recommended Meals:</h1>];
 let inputList = [];
 let tempFormState;
 
@@ -50,7 +50,8 @@ export default function Tool() {
 
     useEffect(() => {
         if (ownedFoods && noUseFoods) {
-            updateAcceptableMeals(Object.keys(meals).map((meal) => {
+            let tempAcceptableMeals = [];
+            Object.keys(meals).forEach((meal) => {
                 for (let i of meals[meal]) {
                     if (noUseFoods.includes(i)) {
                         console.log("exited via noUse", i);
@@ -61,12 +62,15 @@ export default function Tool() {
                         return;
                     }
                 }
-                return meal;
-            }));
+                tempAcceptableMeals.push(meal);
+            });
+            updateAcceptableMeals(tempAcceptableMeals);
         }
     }, [ownedFoods, noUseFoods]);
 
     function mySubmitForm() {
+        window.scrollTo(0, 0);
+
         if (currentStage === 0) {
             updateNoUseFoods(formState.map((i, n) => {if (i) { return foods[n]; } }));
         } else if (currentStage === 1) {
@@ -80,7 +84,7 @@ export default function Tool() {
     
     return (
         <section style={{
-            border: "1.5px solid black",
+            border: "1.5px solid #070C33",
             width: "50vw",
             marginLeft: "auto",
             marginRight: "auto",
@@ -93,8 +97,10 @@ export default function Tool() {
             <div style={{
                 display: currentStage > 1 ? "block" : "none"
             }}>
-                <h2>Recommended Meals:</h2>
-                <ul>{acceptableMeals.map(meal => meal ? <li key={meal} style={{fontSize: "1.2em"}}><b>{meal}</b> ({meals[meal].map((i,n) => n < (meals[meal].length - 1) ? `${i}, ` : i)})</li> : null)}</ul>
+                {/* <ul>{acceptableMeals.length == 0 ? "Tough crowd! I've got nothing for you." : acceptableMeals.map(meal => <li key={meal} style={{fontSize: "1.2em"}}><b>{meal}</b> ({meals[meal].map((i,n) => n < (meals[meal].length - 1) ? `${i}, ` : i)})</li>)}</ul> */}
+                {acceptableMeals.length == 0 ? <p style={{
+                    textAlign: "center"
+                }}>Tough crowd! I've got nothing for you.</p> : <MealDisplay displayMeals={acceptableMeals} />}
             </div>
             <Form action={mySubmitForm} style={{
                 marginLeft: "10%",

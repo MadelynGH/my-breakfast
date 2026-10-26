@@ -1,13 +1,31 @@
 h1, h2, h3, h4, h5, h6 {
     text-align: center;
     margin-bottom: 20px;
+    color: #070C33;
 }
+
+ul, p, label {
+    color: #070C33;
+}
+
+li {
+    margin: 1em;
+}
+
 .red {
     color: #C75874;
 }
 
 .greenText {
     color: #405739;
+}
+
+a {
+    font-weight: 500;
+}
+
+a:hover {
+    font-weight: 400;
 }
 
 .buttonAppearance {
