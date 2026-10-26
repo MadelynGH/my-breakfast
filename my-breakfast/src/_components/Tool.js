@@ -17,7 +17,7 @@ const stages = [<h2 style={{
                 marginTop: "0"
             }}>Select all the ingredients that you <span className="greenText">DO</span> have.</h2>, <h2 style={{
                 marginTop: "0"
-            }}>How much time do you have for prep?</h2>, <h1 style={{
+            }}>How many minutes do you have for prep?</h2>, <h1 style={{
                 marginTop: "0",
                 fontSize: "1.8em"
             }}>Recommended Meals:</h1>];
