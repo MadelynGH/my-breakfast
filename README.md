@@ -15,4 +15,5 @@ To get a customized list of meals based on what you "hate," what you actually ha
 4. Click/select all the ingredients that you have available.
 5. Click "Next"
 6. Type into the input field how many minutes you have available to prepare your food.
-7. View your results! (There's a chance that it won't give you any meal suggestions because none of my listed meals your constraints.)
+7. Click "Next"
+8. View your results! (There's a chance that it won't give you any meal suggestions because none of my listed meals your constraints.)
